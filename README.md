@@ -75,7 +75,7 @@ curl -X GET http://127.17.0.2:5000/
   }
 ```
 
-# Get directory content
+# Get directory or file content
 ## Request
 
 `GET/<req_path>`
