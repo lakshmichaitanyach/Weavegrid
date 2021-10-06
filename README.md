@@ -26,7 +26,7 @@ python application.py
 To run in docker 
 ```
  docker build -t docker_image_name -f Dockerfile.
- docker run -dp 5000:5000 docker_image_name
+ docker run -dp 5000:5000 --env ROOT=path docker_image_name
 ```
  
 
