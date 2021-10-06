@@ -1,4 +1,4 @@
-from flask import Response, request,request, make_response, abort, render_template
+from flask import Response, request, make_response, abort, render_template
 from flask_restful import Resource, reqparse
 from flask_cors import CORS
 
@@ -10,7 +10,7 @@ from os import environ
 from pathlib import Path
 
 import stat
-from stat import ST_CTIME, ST_MODE, ST_SIZE, ST_UID, ST_GID
+from stat import ST_CTIME, ST_MODE, ST_SIZE, ST_UID
 from dotenv import load_dotenv
 from resources.errors import RootDoesNotExistError, InvalidPathError, FolderAlreadyExistsError, FileDoesNotExistError, FileAlreadyExistsError, FolderNotEmptyError
 
@@ -128,14 +128,14 @@ class RootAPI(Resource):
         get root content
         """
         try:
-            path = environ.get('ROOT')
+            req_path = environ.get('ROOT')
             if not path:
                 abort("Please enter the root")
-            if os.path.isfile(path):
-                response = get_file_contents(path)
+            if os.path.isfile(req_path):
+                response = get_file_contents(req_path)
                 return response, 200
             else:
-                response = get_directory_contents(path)
+                response = get_directory_contents(req_path)
                 return response, 200
         except Exception:
             raise RootDoesNotExistError
@@ -165,12 +165,13 @@ class BrowseAPI(Resource):
         req_path: it is the requested path to the file or folder that the user want to look
         """
         try:
-            path = os.path.join(environ.get('ROOT'), req_path)
-            if os.path.isfile(path):
-                response = get_file_contents(path)
+            root_path = environ.get('ROOT')
+            user_path = os.path.join(root_path, req_path)
+            if os.path.isfile(user_path):
+                response = get_file_contents(user_path)
                 return response, 200
             else:
-                response = get_directory_contents(path)
+                response = get_directory_contents(user_path)
                 return response, 200
         except Exception:
             raise InvalidPathError
@@ -179,14 +180,15 @@ class BrowseAPI(Resource):
 
     def delete(self, req_path):
         try:
-            path = os.path.join(environ.get('ROOT'), req_path)
-            if os.path.exists(path):
-                if os.path.isfile(path):
-                    os.remove(path)
+            root_path = environ.get('ROOT')
+            user_path = os.path.join(root_path, req_path)
+            if os.path.exists(user_path):
+                if os.path.isfile(user_path):
+                    os.remove(user_path)
                     return "File deleted successfully", 200
                 else:
-                    if len(os.listdir(path)) == 0:
-                        os.rmdir(path)
+                    if len(os.listdir(user_path)) == 0:
+                        os.rmdir(user_path)
                     return "Folder deleted successfully", 200
         except FileNotFoundError:
             raise FileDoesNotExistError
@@ -200,9 +202,10 @@ class CreateFolder(Resource):
     """
     def post(self, req_path=None):
         try:
-            path = environ['ROOT']
+            path = environ.get('ROOT')
+            root_path = environ.get('ROOT')
             if req_path:
-                path = os.path.join(environ.get('ROOT'), req_path)
+                path = os.path.join(root_path, req_path)
             user_input = request.get_json()
             createFolder(user_input, path)
         except Exception:
@@ -214,9 +217,10 @@ class CreateFile(Resource):
     """
     def post(self, req_path=None):
         try:
-            path = environ['ROOT']
+            path = environ.get('ROOT')
+            root_path = environ.get('ROOT')
             if req_path:
-                path = os.path.join(environ.get('ROOT'), req_path)
+                path = os.path.join(root_path, req_path)
             user_input = request.get_json()
             createFile(user_input, path)
         except Exception:
