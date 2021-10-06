@@ -81,7 +81,7 @@ curl -X GET http://127.17.0.2:5000/
 `GET/<req_path>`
 
 ```
-curl -X GET http://127.17.0.2:5000/?req_path=Weavegrid
+curl -X GET http://127.17.0.2:5000/Weavegrid
 
 ```
 
@@ -185,7 +185,7 @@ File created successfully.
 `DELETE/file or folder name`
 
 ```
-curl -X DELETE http://127.17.0.2:5000/?req_path=testfile.txt
+curl -X DELETE http://127.17.0.2:5000/testfile.txt
 
 ```
 ## Response
