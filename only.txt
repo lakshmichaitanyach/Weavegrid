@@ -1,0 +1,57 @@
+Python Read Text File
+If this site saves you hours of work, please whitelist it in your ad blocker 😭 to support us 💖
+in creating more helpful and free content in the future.
+Summary: in this tutorial, you learn various ways to read text files in Python.
+
+TL;DR
+The following shows how to read all texts from the readme.txt file into a string:
+
+with open('readme.txt') as f:
+    lines = f.readlines()
+Code language: JavaScript (javascript)
+Steps for reading a text file in Python
+To read a text file in Python, you follow these steps:
+
+First, open a text file for reading by using the open() function.
+Second, read text from the text file using the file read(), readline(), or readlines() method of the file object.
+Third, close the file using the file close() method.
+1) open() function
+The open() function has many parameters but you’ll be focusing on the first two.
+
+open(path_to_file, mode)
+The path_to_file parameter specifies the path to the text file.
+
+If the file is in the same folder as the program, you just need to specify the name of the file. Otherwise, you need to specify the path to the file.
+
+To specify the path to the file, you use the forward-slash ('/') even if you’re working in Windows.
+
+For example, if the file is readme.txt stored in the sample folder as the program, you need to specify the path to the file as c:/sample/readme.txt
+
+The mode is an optional parameter. It’s a string that specifies the mode in which you want to open the file.
+
+The following table shows available modes for opening a text file:
+
+Mode	Description
+'r'	Open for text file for reading text
+'w'	Open a text file for writing text
+'a'	Open a text file for appending text
+For example, to open a file whose name is the-zen-of-python.txt stored in the same folder as the program, you use the following code:
+
+ f = open('the-zen-of-python.txt','r')
+Code language: JavaScript (javascript)
+The open() function returns a file object which you will use to read text from a text file.
+
+2) Reading text methods
+The file object provides you with three methods for reading text from a text file:
+
+read() – read all text from a file into a string. This method is useful if you have a small file and you want to manipulate the whole text of that file.
+readline() – read the text file line by line and return all the lines as strings.
+readlines() – read all the lines of the text file and return them as a list of strings.
+3) close() method
+The file that you open will remain open until you close it using the close() method.
+
+It’s important to close the file that is no longer in use. If you don’t close the file, the program may crash or the file would be corrupted.
+
+The following shows how to call the close() method to close the file:
+
+f.close()
