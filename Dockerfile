@@ -1,6 +1,6 @@
 FROM python:3.6.1-alpine
 
-
+ENV ROOT=""
 WORKDIR /Weavegrid
 ADD . /Weavegrid
 RUN pip install --upgrade pip
