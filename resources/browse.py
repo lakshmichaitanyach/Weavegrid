@@ -1,4 +1,4 @@
-from flask import Response, request,jsonify, request, make_response, abort, render_template
+from flask import Response, request,request, make_response, abort, render_template
 from flask_restful import Resource, reqparse
 from flask_cors import CORS
 
@@ -10,7 +10,7 @@ from os import environ
 from pathlib import Path
 
 import stat
-from stat import S_ISREG, ST_CTIME, ST_MODE, ST_SIZE, ST_UID, ST_GID
+from stat import ST_CTIME, ST_MODE, ST_SIZE, ST_UID, ST_GID
 from dotenv import load_dotenv
 from resources.errors import RootDoesNotExistError, InvalidPathError, FolderAlreadyExistsError, FileDoesNotExistError, FileAlreadyExistsError, FolderNotEmptyError
 
@@ -165,7 +165,7 @@ class BrowseAPI(Resource):
         req_path: it is the requested path to the file or folder that the user want to look
         """
         try:
-            path = os.path.join(environ['ROOT'], req_path)
+            path = os.path.join(environ.get('ROOT'), req_path)
             if os.path.isfile(path):
                 response = get_file_contents(path)
                 return response, 200
@@ -179,7 +179,7 @@ class BrowseAPI(Resource):
 
     def delete(self, req_path):
         try:
-            path = os.path.join(environ['ROOT'], req_path)
+            path = os.path.join(environ.get('ROOT'), req_path)
             if os.path.exists(path):
                 if os.path.isfile(path):
                     os.remove(path)
@@ -202,7 +202,7 @@ class CreateFolder(Resource):
         try:
             path = environ['ROOT']
             if req_path:
-                path = os.path.join(environ['ROOT'], req_path)
+                path = os.path.join(environ.get('ROOT'), req_path)
             user_input = request.get_json()
             createFolder(user_input, path)
         except Exception:
@@ -216,7 +216,7 @@ class CreateFile(Resource):
         try:
             path = environ['ROOT']
             if req_path:
-                path = os.path.join(environ['ROOT'], req_path)
+                path = os.path.join(environ.get('ROOT'), req_path)
             user_input = request.get_json()
             createFile(user_input, path)
         except Exception:
